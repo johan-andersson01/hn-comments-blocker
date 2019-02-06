@@ -1,0 +1,17 @@
+{
+
+  "manifest_version": 2,
+  "name": "HN-comments",
+  "version": "1.0",
+
+  "description": "Blocks the comment section of an HN thread until the linked post has been visited",
+
+
+  "content_scripts": [
+    {
+      "matches": ["*://news.ycombinator.com/*"],
+      "js": ["block-comments.js"]
+    }
+  ]
+
+}
