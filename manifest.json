@@ -6,12 +6,20 @@
 
   "description": "Blocks the comment section of an HN thread until the linked post has been visited",
 
+  "background": {
+      "scripts": ["history_search.js"]
+  },
 
   "content_scripts": [
     {
       "matches": ["*://news.ycombinator.com/*"],
-      "js": ["block-comments.js"]
+      "js": ["block-comments.js"],
+      "run_at": "document_end"
     }
+  ],
+
+  "permissions": [
+    "history"
   ]
 
 }
