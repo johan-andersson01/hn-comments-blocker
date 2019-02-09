@@ -86,7 +86,6 @@ const toggleDisabled = (linkToComments, ignorePattern = null) => {
 
     let thenIsVisited = isVisited.then((result) => { return result })
     thenIsVisited.then((result) => {
-        console.log(result);
         if (!result) {
             disableAnchor(linkToComments);
         } else {
