@@ -4,16 +4,16 @@
   "name": "HN-comments",
   "version": "1.0",
 
-  "description": "Blocks the comment section of an HN thread until the linked post has been visited",
+  "description": "Blocks the comment section of all HN posts where you haven't visited the submitted page url",
 
   "background": {
-      "scripts": ["history_search.js"]
+      "scripts": ["historySearch.js"]
   },
 
   "content_scripts": [
     {
       "matches": ["*://news.ycombinator.com/*"],
-      "js": ["block-comments.js"],
+      "js": ["blockComments.js"],
       "run_at": "document_end"
     }
   ],
