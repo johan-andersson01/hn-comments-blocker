@@ -89,7 +89,8 @@ const toggleDisabled = (linkToComments, ignorePattern = null) => {
         if (!result) {
             disableAnchor(linkToComments);
         } else {
-            let commentAnchor = linkToComments
+            linkToComments.classList.remove("hiddenAnchor");
+            let commentAnchor = linkToComments;
             if (commentAnchor.localName != "a") {
                 commentAnchor = commentAnchor.querySelector("a");
             }
@@ -147,6 +148,7 @@ window.addEventListener("pageshow", (event) => {
         link.addEventListener("click", toggleDisableOnClick);
     }
 });
+
 
 window.addEventListener("DOMContentLoaded", (event) => {
     const sheet = newStyleSheet();
