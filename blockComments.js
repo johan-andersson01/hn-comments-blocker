@@ -6,12 +6,29 @@ const newStyleSheet = () => {
 };
 
 
-const sheet = newStyleSheet();
-sheet.insertRule(".disabled { cursor: not-allowed; opacity: 0.5; }");
-
-
 const collectionToArray = (collection) => {
     return Array.prototype.slice.call(collection);
+};
+
+
+const sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+const changeDisplayStyle = (element, value) => {
+    element.style.display = value
+}
+
+
+const assert = (condition, message) => {
+    if (!condition) {
+        message = message || "Assertion failed";
+        if (typeof Error !== "undefined") {
+            throw new Error(message);
+        }
+        throw message;
+    }
 };
 
 
@@ -34,46 +51,33 @@ const isElementMatchingAnchor = (element, pattern) => {
 // hides an already visible anchor element and inserts a span replacement
 const disableAnchor = (element) => {
     if (element.localName == "a" && element.style.display != "none") {
-        const replacement = document.createElement("span")
-        replacement.classList.add("disabled")
-        replacement.innerHTML = element.innerHTML
-        replacement.setAttribute("href", element.href)
-        element.parentNode.insertBefore(replacement, element)
-        changeDisplayStyle(element, "none")
+        const replacement = document.createElement("span");
+        replacement.classList.add("disabled");
+        replacement.innerHTML = element.innerHTML;
+        replacement.setAttribute("href", element.href);
+        element.parentNode.insertBefore(replacement, element);
+        element.classList.add("hiddenAnchor");
+        changeDisplayStyle(element, "none");
     } else if (element.childElementCount > 0) {
-        collectionToArray(element.children).map(child => disableAnchor(child))
+        collectionToArray(element.children).map(child => disableAnchor(child));
     } else {
         // ignore non-anchor element
     } 
 };
 
 
-const changeDisplayStyle = (element, value) => {
-    element.style.display = value
-}
-
-
-const assert = (condition, message) => {
-    if (!condition) {
-        message = message || "Assertion failed";
-        if (typeof Error !== "undefined") {
-            throw new Error(message);
-        }
-        throw message;
-    }
-};
-
-
 // do nothing if story link matches ignorePattern
 // disable comment anchor if its story link is unvisited
 // remove replacement span if the story link is visited
-const toggleDisabled = (linkToComments, ignorePattern) => {
+const toggleDisabled = (linkToComments, ignorePattern = null) => {
     const infoRow = linkToComments.closest("tr");
     const itemRow = infoRow.previousSibling;
     const anchor = itemRow.querySelector(".storylink");
-    const matches = anchor.href.match(ignorePattern);
-    if (matches && matches.length > 0)
-        return;
+    if (ignorePattern) {
+        const matches = anchor.href.match(ignorePattern);
+        if (matches && matches.length > 0)
+            return;
+    }
     const isVisited = Promise.resolve(
         browser.runtime.sendMessage({
             url: anchor.href
@@ -82,6 +86,7 @@ const toggleDisabled = (linkToComments, ignorePattern) => {
 
     let thenIsVisited = isVisited.then((result) => { return result })
     thenIsVisited.then((result) => {
+        console.log(result);
         if (!result) {
             disableAnchor(linkToComments);
         } else {
@@ -106,9 +111,19 @@ const toggleDisabled = (linkToComments, ignorePattern) => {
 };
 
 
+const toggleDisableOnClick = async (event) => {
+    await sleep(5000); // wait for page load
+    const storylink = event.target;
+    const itemRow = storylink.closest("tr");
+    const infoRow = itemRow.nextSibling;
+    const anchors = collectionToArray(infoRow.querySelectorAll(".hiddenAnchor"));
+    anchors.map(anchor => toggleDisabled(anchor));
+};
+
+
 const blockUnvisitedStoryComments = () => {
     const hnItemRegex = new RegExp(".*://news.ycombinator.com/item.*")
-    const subtexts = collectionToArray(document.getElementsByClassName("subtext"));
+    subtexts = collectionToArray(document.getElementsByClassName("subtext"));
     const subtextsChildren = subtexts.map(
         subtext => collectionToArray(subtext.children)
     );
@@ -128,4 +143,14 @@ const blockUnvisitedStoryComments = () => {
 
 window.addEventListener("pageshow", (event) => {
     blockUnvisitedStoryComments();
+    const storylinks = collectionToArray(document.getElementsByClassName("storylink"));
+    for (link of storylinks) {
+        link.addEventListener("click", toggleDisableOnClick);
+    }
 });
+
+window.addEventListener("DOMContentLoaded", (event) => {
+    const sheet = newStyleSheet();
+    sheet.insertRule(".disabled { cursor: not-allowed; opacity: 0.5; }");
+});
+
