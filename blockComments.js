@@ -10,8 +10,6 @@ const sheet = newStyleSheet();
 sheet.insertRule(".disabled { cursor: not-allowed; opacity: 0.5; }");
 
 
-
-
 const collectionToArray = (collection) => {
     return Array.prototype.slice.call(collection);
 };
