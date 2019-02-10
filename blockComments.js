@@ -53,7 +53,7 @@ const disableAnchor = (element) => {
     if (element.localName == "a" && element.style.display != "none") {
         const replacement = document.createElement("span");
         replacement.classList.add("disabled");
-        replacement.innerHTML = element.innerHTML;
+        replacement.innerText = element.innerText;
         replacement.setAttribute("href", element.href);
         element.parentNode.insertBefore(replacement, element);
         element.classList.add("hiddenAnchor");
