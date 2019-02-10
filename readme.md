@@ -8,6 +8,10 @@ The habit to only read comments is thus a dangerous one, which is why I have cho
 
 You will of course be able to cheat this system by visiting the linked post without reading it, but I leave that responsibility to you. This extension is merely a tool that can help you change a bad habit. If you don't inherently want to change that habit, this extension will most likely not help you.
 
+## Installation
+
+The extension can be installed from [addons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/hn-comments-blocker/).
+
 ## Miscellaneous information
 
 - If you want to read story links in new tabs or windows and later return to the HN home page with unblocked comment sections, this is supported with `shift+click` and `right+click` (i.e. left clicks) - not via the context menu (i.e. right clicks).
