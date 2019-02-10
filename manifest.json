@@ -1,7 +1,7 @@
 {
 
   "manifest_version": 2,
-  "name": "HN-comments",
+  "name": "HN comments blocker",
   "version": "1.0",
 
   "description": "Blocks the comment section of all HN posts where you haven't visited the submitted page url",
