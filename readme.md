@@ -1,4 +1,4 @@
-# Hacker News Comments Blocker
+# ![icon](icons/icon.png) Hacker News Comments Blocker
 
 If you are anything like me, you have a tendency to not read the submitted posts on Hacker News and instead opt to only read the comments. While this might provide you with a wide range of knowledge, comments seldom provide deep knowledge as blog posts or other longer pieces might do. Further, you are neglecting an expert opinion or an unbiased information piece, simply because comments are easier to digest.
 

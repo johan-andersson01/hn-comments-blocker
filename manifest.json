@@ -6,6 +6,10 @@
 
   "description": "Blocks the comment section of all HN posts where you haven't visited the submitted page url",
 
+  "icons": {
+    "48": "icons/icon.png"
+  },
+
   "background": {
       "scripts": ["historySearch.js"]
   },
